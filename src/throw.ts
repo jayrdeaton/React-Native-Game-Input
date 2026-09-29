@@ -1,4 +1,4 @@
-import { length, scale, type Vec2 } from '@tastic/core'
+import { length, scale, type Vec2 } from '@tastic/core/math'
 
 // Turns a raw release velocity (as reported by a gesture recognizer's own velocity tracking — e.g.
 // react-native-gesture-handler's Pan `velocityX`/`velocityY` at `onEnd`, typically in screen px/sec)

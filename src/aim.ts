@@ -1,4 +1,4 @@
-import { length, scale, type Vec2 } from '@tastic/core'
+import { length, scale, type Vec2 } from '@tastic/core/math'
 
 export interface AimResult {
   velocity: Vec2

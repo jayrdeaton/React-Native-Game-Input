@@ -3,7 +3,7 @@
 Pure, worklet-safe input resolvers for local-multiplayer arcade games. Built on
 [`@tastic/core`](https://github.com/jayrdeaton/react-native-game-core)'s `Vec2` — no React or React Native
 dependency, and does not depend on [`@tastic/physics`](https://github.com/jayrdeaton/game-physics)
-either (anything vector-shaped it needs comes from `@tastic/core`).
+either (anything vector-shaped it needs comes from the dependency-free `@tastic/core/math` entry).
 
 Player-zone routing (which physical touch/key-set belongs to which player) is deliberately out of
 scope here — that's [`@tastic/split-screen`](https://github.com/jayrdeaton/react-native-split-screen)'s
@@ -64,4 +64,5 @@ npm install
 
 ## Peer dependencies
 
-`@tastic/core` (>=0.1.0) — required for the `Vec2` type.
+`@tastic/core` (>=0.10.0): required for `Vec2` and the vector helpers, imported from its dependency-free
+`@tastic/core/math` entry, so none of core's app-level modules or peers are loaded.
