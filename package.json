@@ -1,6 +1,6 @@
 {
   "name": "@tastic/input",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Pure, worklet-safe input resolvers for local-multiplayer arcade games: swipe/vector-to-direction classification, keyboard scheme mapping, drag aim vectors (pull/push), and flick-throw velocity",
   "keywords": [
     "react-native",
