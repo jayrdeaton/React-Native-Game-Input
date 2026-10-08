@@ -38,7 +38,7 @@ not how far the drag traveled — the feel a "grab and throw" mechanic wants.
 ## Usage
 
 ```ts
-import { computeAimVector, KEY_SCHEMES, resolveKeyDirection, resolveSwipeDirection } from '@tastic/input'
+import { assignSeatScheme, computeAimVector, KEY_SCHEMES, resolveKeyDirection, resolveSwipeDirection } from '@tastic/input'
 
 // A swipe gesture and a keypress both resolve to the same Direction type:
 const swiped = resolveSwipeDirection({ x: dragDx, y: dragDy }, 24)
@@ -46,6 +46,9 @@ const pressed = resolveKeyDirection(event.key, KEY_SCHEMES.wasd)
 
 // A pull-to-shoot control scheme:
 const { velocity, power } = computeAimVector({ x: dragDx, y: dragDy }, 120, 500, -1)
+
+// Picking the other seat's scheme swaps them, so two seats never share keys:
+const seats = assignSeatScheme({ 1: 'mouse', 2: 'wasd' }, 1, 'wasd') // { 1: 'wasd', 2: 'mouse' }
 ```
 
 ## Install (local dev via yalc)

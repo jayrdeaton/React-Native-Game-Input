@@ -50,3 +50,14 @@ export function resolveSchemeDirection(event: Pick<KeyboardEvent, 'key' | 'code'
   if (scheme === 'numpad') return resolveKeyDirection(event.code, KEY_SCHEMES.numpad)
   return resolveKeyDirection(event.key, KEY_SCHEMES[scheme])
 }
+
+// The seat-to-scheme pair that results from `seat` picking `scheme` in a two-seat game. Swap-on-conflict:
+// picking the scheme the other seat already has hands that seat this seat's old one, so two seats never
+// share keys. Without it, a keyboard layer that sends each key to the first seat whose scheme claims it
+// leaves the other seat's keys dead. Generic over the scheme type so a caller can mix in schemes this
+// package doesn't know about, such as a keyless 'mouse' alongside the KeyScheme members.
+export function assignSeatScheme<S extends string>(current: Record<1 | 2, S>, seat: 1 | 2, scheme: S): Record<1 | 2, S> {
+  const other: 1 | 2 = seat === 1 ? 2 : 1
+  const otherScheme = current[other] === scheme ? current[seat] : current[other]
+  return { [seat]: scheme, [other]: otherScheme } as Record<1 | 2, S>
+}

@@ -1,4 +1,4 @@
-import { KEY_SCHEMES, resolveKeyDirection, resolveSchemeDirection } from '../keyboard'
+import { assignSeatScheme, KEY_SCHEMES, resolveKeyDirection, resolveSchemeDirection } from '../keyboard'
 
 describe('resolveKeyDirection', () => {
   it('maps each key in the wasd scheme to its direction', () => {
@@ -65,5 +65,42 @@ describe('resolveSchemeDirection', () => {
   it('returns null for a key not in the given scheme', () => {
     expect(resolveSchemeDirection({ key: 'q', code: 'KeyQ' }, 'wasd')).toBeNull()
     expect(resolveSchemeDirection({ key: '5', code: 'Numpad5' }, 'numpad')).toBeNull()
+  })
+})
+
+describe('assignSeatScheme', () => {
+  type Scheme = 'mouse' | 'wasd' | 'arrows' | 'ijkl' | 'numpad'
+
+  it('sets only that seat when the scheme is free', () => {
+    expect(assignSeatScheme({ 1: 'mouse', 2: 'wasd' }, 1, 'arrows')).toEqual({ 1: 'arrows', 2: 'wasd' })
+  })
+
+  // A one player screen may show only seat 1's picker, with nothing taken, so this is reachable there.
+  it("swaps when seat 1 picks seat 2's scheme", () => {
+    expect(assignSeatScheme({ 1: 'mouse', 2: 'wasd' }, 1, 'wasd')).toEqual({ 1: 'wasd', 2: 'mouse' })
+  })
+
+  it("swaps when seat 2 picks seat 1's scheme", () => {
+    expect(assignSeatScheme({ 1: 'ijkl', 2: 'numpad' }, 2, 'ijkl')).toEqual({ 1: 'numpad', 2: 'ijkl' })
+  })
+
+  it('leaves both seats alone when a seat re-picks its own scheme', () => {
+    expect(assignSeatScheme({ 1: 'mouse', 2: 'wasd' }, 2, 'wasd')).toEqual({ 1: 'mouse', 2: 'wasd' })
+  })
+
+  it('never leaves two seats on one scheme, from any distinct starting pair', () => {
+    const schemes: Scheme[] = ['mouse', 'wasd', 'arrows', 'ijkl', 'numpad']
+    for (const a of schemes) {
+      for (const b of schemes) {
+        if (a === b) continue
+        for (const seat of [1, 2] as const) {
+          for (const scheme of schemes) {
+            const seats = assignSeatScheme<Scheme>({ 1: a, 2: b }, seat, scheme)
+            expect(seats[seat]).toBe(scheme)
+            expect(seats[1]).not.toBe(seats[2])
+          }
+        }
+      }
+    }
   })
 })

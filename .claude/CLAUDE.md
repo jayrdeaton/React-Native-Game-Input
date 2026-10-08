@@ -20,7 +20,7 @@ registry).
 ```bash
 npm run lint         # ESLint
 npm run fix           # ESLint --fix
-npm test              # Jest (35 tests)
+npm test              # Jest (40 tests)
 npm run test:watch    # Jest --watchAll
 npm run typecheck     # tsc --noEmit
 npm run build         # tsup, outputs CJS + ESM + types to dist/
@@ -50,7 +50,8 @@ src/
   aim.ts        - computeAimVector: drag-distance-based launch velocity (pull-and-release aim); AimResult
   direction.ts  - resolveSwipeDirection, flipDirection, isOppositeDirection, applyControlInversion, isEffectiveTurn; Direction type
   keyboard.ts   - resolveKeyDirection + KEY_SCHEMES (wasd/arrows/ijkl/numpad) + resolveSchemeDirection
-                  (the numpad-aware entry point — see its own doc comment); DirectionKeyMap/KeyScheme types
+                  (the numpad-aware entry point, see its own doc comment) + assignSeatScheme (two-seat
+                  swap-on-conflict); DirectionKeyMap/KeyScheme types
   tap.ts        - isTap: tap-vs-drag classification by total drift distance
   throw.ts      - computeThrowVelocity: release-velocity-based launch velocity (flick throw)
   __tests__/
@@ -74,7 +75,8 @@ From `src/index.ts`:
 - `AimResult`, `computeAimVector` — drag-based aim (`aim.ts`)
 - `applyControlInversion`, `Direction`, `flipDirection`, `isEffectiveTurn`, `isOppositeDirection`,
   `resolveSwipeDirection` — direction resolution and turn helpers (`direction.ts`)
-- `DirectionKeyMap`, `KEY_SCHEMES`, `resolveKeyDirection` — keyboard mapping (`keyboard.ts`)
+- `assignSeatScheme`, `DirectionKeyMap`, `KEY_SCHEMES`, `KeyScheme`, `resolveKeyDirection`,
+  `resolveSchemeDirection`: keyboard mapping and seat scheme assignment (`keyboard.ts`)
 - `isTap` — tap detection (`tap.ts`)
 - `computeThrowVelocity` — flick-throw velocity (`throw.ts`)
 
@@ -97,7 +99,7 @@ it only touches the dependency-free `Vec2` math.
 
 - Framework: Jest (`@infinitetoken/jest-config/react-native`), jsdom test environment, no local mocks
   (`__mocks__/` doesn't exist — nothing here touches a native or DOM API)
-- 29 tests across 5 suites, one per source file (`aim`, `direction`, `keyboard`, `tap`, `throw`)
+- 40 tests across 5 suites, one per source file (`aim`, `direction`, `keyboard`, `tap`, `throw`)
 - Coverage: 100% statements/branches/functions/lines, well past the shared preset's 70% floor — no
   local `collectCoverageFrom`/`coverageThreshold` override
 - No local `jest.config.cjs` overrides — `@infinitetoken/jest-config@0.2.1`'s `/react-native` preset
