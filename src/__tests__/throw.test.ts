@@ -12,7 +12,7 @@ describe('computeThrowVelocity', () => {
   })
 
   it('a fast short flick and a slow long drag with the same raw velocity produce the same throw', () => {
-    // computeThrowVelocity only ever sees the reported velocity, not distance/duration — this is
+    // computeThrowVelocity only ever sees the reported velocity, not distance/duration - this is
     // exactly what distinguishes it from computeAimVector's distance-based power.
     const result = computeThrowVelocity({ x: 300, y: 0 }, 1, 1000)
     expect(result.x).toBeCloseTo(300)

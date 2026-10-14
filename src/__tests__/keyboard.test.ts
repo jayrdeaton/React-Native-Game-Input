@@ -33,7 +33,7 @@ describe('resolveKeyDirection', () => {
     expect(resolveKeyDirection('w', custom)).toBeNull()
   })
 
-  // numpad's own KEY_SCHEMES entry is a plain DirectionKeyMap like any other — resolveKeyDirection
+  // numpad's own KEY_SCHEMES entry is a plain DirectionKeyMap like any other - resolveKeyDirection
   // itself has no numpad-specific behavior, it just doesn't know (or need to know) that these
   // particular values are meant to be compared against .code rather than .key. See
   // resolveSchemeDirection below for the function that actually knows that.

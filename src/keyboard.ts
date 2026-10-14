@@ -7,7 +7,7 @@ export interface DirectionKeyMap {
   right: string
 }
 
-// The full set of local-multiplayer keyboard splits this package knows about. Not exhaustive — pass
+// The full set of local-multiplayer keyboard splits this package knows about. Not exhaustive - pass
 // your own DirectionKeyMap to resolveKeyDirection for anything else (a custom scheme, or a 4th
 // simultaneous local player). Deliberately excludes a "mouse"/"none" member: a scheme with no keys at
 // all isn't a DirectionKeyMap, so a caller layering one on top of this (see resolveSchemeDirection's
@@ -15,7 +15,7 @@ export interface DirectionKeyMap {
 export type KeyScheme = 'wasd' | 'arrows' | 'ijkl' | 'numpad'
 
 // wasd/arrows/ijkl are lowercased to match resolveKeyDirection's own case-insensitive comparison
-// against KeyboardEvent.key. numpad is the odd one out — see resolveSchemeDirection's own comment for
+// against KeyboardEvent.key. numpad is the odd one out - see resolveSchemeDirection's own comment for
 // why its values are matched against KeyboardEvent.code instead, and must be read through that
 // function (or the same .code-based comparison done by hand) rather than resolveKeyDirection directly.
 export const KEY_SCHEMES: Record<KeyScheme, DirectionKeyMap> = {
@@ -42,7 +42,7 @@ export function resolveKeyDirection(key: string, keyMap: DirectionKeyMap): Direc
 // The one entry point that knows all four KEY_SCHEMES correctly, including numpad's own quirk:
 // resolveKeyDirection alone isn't enough there, because a numpad key's `.key` value flips between a
 // digit ('8') and its NumLock-off meaning ('ArrowUp', etc.) depending on NumLock state, while `.code`
-// stays 'Numpad8' either way — and matching by `.code` also means numpad never collides with the
+// stays 'Numpad8' either way - and matching by `.code` also means numpad never collides with the
 // top-row digit keys, which report 'Digit8' rather than 'Numpad8'. wasd/arrows/ijkl have no such
 // ambiguity and are matched by `.key` as usual. Takes just the two properties this needs (not the
 // whole KeyboardEvent) so a caller can pass a plain object in tests without constructing a real event.
