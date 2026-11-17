@@ -10,6 +10,7 @@ export const HELD_KEY_RAMP_MS = 150
 // cancel on that axis, and a direction listed twice counts once. Build the set from keydown/keyup
 // with resolveKeyDirection or resolveSchemeDirection; this only reads it.
 export function resolveHeldKeyTilt(held: Iterable<Direction>): Vec2 {
+  'worklet'
   let up = false
   let down = false
   let left = false

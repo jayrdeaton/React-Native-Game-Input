@@ -82,9 +82,10 @@ src/
     webDeviceMotion (.test.ts)
 ```
 
-The root files are small pure functions with no shared internal state. `direction.ts`'s functions and
-every numeric tilt function (`gravity.ts`, `orientation.ts`, `smoothing.ts`, `rampHeldKeyTilt`) are
-annotated `'worklet'` (Reanimated-safe - callable on the UI thread without a JS-thread hop). The root
+The root files are small pure functions with no shared internal state. Every exported function is
+annotated `'worklet'` (Reanimated-safe - callable on the UI thread without a JS-thread hop). Until
+2026-11-17 only `direction.ts` and the numeric tilt functions were; aim, throw, tap, the keyboard
+functions, `resolveHeldKeyTilt` and `resolveTiltPlatform` got theirs then. The root
 imports only `@tastic/core/math` (`length`, `normalize`, `scale`, `Vec2` - never the root barrel or its
 React-dependent exports), which is what keeps it usable without `react` installed at the call-site.
 

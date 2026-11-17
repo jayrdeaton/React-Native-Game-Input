@@ -50,6 +50,7 @@ export const TILT_AXIS_SIGNS: Record<TiltPlatform, TiltAxisSigns> = {
 // agent, so a Mac one with touch points counts as iOS). Every browser on iOS is WebKit, so Chrome and
 // Firefox there read 'ios-web' too.
 export function resolveTiltPlatform(os: string, userAgent = '', maxTouchPoints = 0): TiltPlatform {
+  'worklet'
   if (os !== 'web') return 'native'
   if (/iPad|iPhone|iPod/.test(userAgent)) return 'ios-web'
   if (/Macintosh/.test(userAgent) && maxTouchPoints > 1) return 'ios-web'

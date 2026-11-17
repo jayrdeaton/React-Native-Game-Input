@@ -31,6 +31,7 @@ export const KEY_SCHEMES: Record<KeyScheme, DirectionKeyMap> = {
 // resolveSwipeDirection does, so a game's turn handler doesn't need to know or care whether a
 // direction came from a keypress or a swipe.
 export function resolveKeyDirection(key: string, keyMap: DirectionKeyMap): Direction | null {
+  'worklet'
   const normalized = key.toLowerCase()
   if (normalized === keyMap.up) return 'up'
   if (normalized === keyMap.down) return 'down'
@@ -47,6 +48,7 @@ export function resolveKeyDirection(key: string, keyMap: DirectionKeyMap): Direc
 // ambiguity and are matched by `.key` as usual. Takes just the two properties this needs (not the
 // whole KeyboardEvent) so a caller can pass a plain object in tests without constructing a real event.
 export function resolveSchemeDirection(event: Pick<KeyboardEvent, 'key' | 'code'>, scheme: KeyScheme): Direction | null {
+  'worklet'
   if (scheme === 'numpad') return resolveKeyDirection(event.code, KEY_SCHEMES.numpad)
   return resolveKeyDirection(event.key, KEY_SCHEMES[scheme])
 }
@@ -57,6 +59,7 @@ export function resolveSchemeDirection(event: Pick<KeyboardEvent, 'key' | 'code'
 // leaves the other seat's keys dead. Generic over the scheme type so a caller can mix in schemes this
 // package doesn't know about, such as a keyless 'mouse' alongside the KeyScheme members.
 export function assignSeatScheme<S extends string>(current: Record<1 | 2, S>, seat: 1 | 2, scheme: S): Record<1 | 2, S> {
+  'worklet'
   const other: 1 | 2 = seat === 1 ? 2 : 1
   const otherScheme = current[other] === scheme ? current[seat] : current[other]
   return { [seat]: scheme, [other]: otherScheme } as Record<1 | 2, S>

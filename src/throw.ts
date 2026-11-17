@@ -10,6 +10,7 @@ import { length, scale, type Vec2 } from '@tastic/core/math'
 // velocity units into whatever your own game's velocity is expressed in - tune it by feel, same as
 // any other gesture-calibration constant.
 export function computeThrowVelocity(rawVelocity: Vec2, pixelsPerSecondToGameUnit: number, maxSpeed: number): Vec2 {
+  'worklet'
   const scaled = scale(rawVelocity, pixelsPerSecondToGameUnit)
   const speed = length(scaled)
   return speed > maxSpeed ? scale(scaled, maxSpeed / speed) : scaled

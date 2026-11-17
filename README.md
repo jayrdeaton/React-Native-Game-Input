@@ -4,7 +4,9 @@ Pure, worklet-safe input resolvers for local-multiplayer arcade games. Built on
 [`@tastic/core`](https://github.com/jayrdeaton/react-native-game-core)'s `Vec2` - the root entry has no
 React or React Native dependency, and does not depend on [`@tastic/physics`](https://github.com/jayrdeaton/game-physics)
 either (anything vector-shaped it needs comes from the dependency-free `@tastic/core/math` entry). The one
-React piece, the `useTilt` sensor hook, lives in its own `@tastic/input/tilt` subpath.
+React piece, the `useTilt` sensor hook, lives in its own `@tastic/input/tilt` subpath. Every root
+function is `'worklet'`-annotated, so it runs on the UI thread (a gesture callback) as well as the JS
+thread.
 
 Player-zone routing (which physical touch/key-set belongs to which player) is deliberately out of
 scope here - that's [`@tastic/split-screen`](https://github.com/jayrdeaton/react-native-split-screen)'s
@@ -17,8 +19,15 @@ concern, which already owns zone geometry.
 input source can route through - native touch, web pointer, and keyboard alike - so a game's turn
 handler never needs to know which source a direction came from.
 
-**Keyboard** (`KEY_SCHEMES`, `resolveKeyDirection`) - maps a raw keyboard key to the same `Direction`
-type, with `wasd`/`arrows`/`ijkl` presets for local multiplayer (or bring your own `DirectionKeyMap`).
+**Keyboard** (`KEY_SCHEMES`, `resolveKeyDirection`, `resolveSchemeDirection`, `assignSeatScheme`) - maps
+a raw keyboard key to the same `Direction` type, with `wasd`/`arrows`/`ijkl`/`numpad` presets for local
+multiplayer (or bring your own `DirectionKeyMap` to `resolveKeyDirection`, which compares the key
+lowercased). `resolveSchemeDirection(event, scheme)` is the one to use with the presets: it takes the
+event's `key` and `code` and matches `numpad` by `code` (`Numpad8` with NumLock on or off, never the
+top-row `Digit8`) and the other presets by `key`. `assignSeatScheme(current, seat, scheme)` gives a
+two-seat game's `seat` that `scheme` and, if the other seat had it, hands the other seat this seat's
+old one, so two seats never share keys. It's generic over the scheme name, so a keyless `'mouse'` can
+sit alongside the presets.
 
 **Turn helpers** (`flipDirection`, `isOppositeDirection`, `applyControlInversion`, `isEffectiveTurn`) -
 small utilities for turn-based games: apply a uniform direction transform across every input source
@@ -61,9 +70,9 @@ const seats = assignSeatScheme({ 1: 'mouse', 2: 'wasd' }, 1, 'wasd') // { 1: 'wa
 
 ## Tilt
 
-Pure math in the root entry (every function is `'worklet'`-annotated), and the sensor hook in
-`@tastic/input/tilt`. The hook runs this pipeline on each DeviceMotion sample; the root functions are there
-for anything that wants a piece of it (another hook, a UI-thread worklet, a test).
+Pure math in the root entry (every function is `'worklet'`-annotated), and the
+sensor hook in `@tastic/input/tilt`. The hook runs this pipeline on each DeviceMotion sample; the root
+functions are there for anything that wants a piece of it (another hook, a UI-thread worklet, a test).
 
 1. `computeTiltAngles(reading, TILT_AXIS_SIGNS[platform])`: the raw `accelerationIncludingGravity` to pitch
    and roll in radians, 0/0 lying flat: how far the bottom edge and the right edge dip below the horizon.

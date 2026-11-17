@@ -7,5 +7,6 @@
 // tap) still correctly reads as a tap by this check alone - don't infer "was this a tap" from
 // "resolveSwipeDirection never fired," which misses that in-between case.
 export function isTap(totalDistance: number, tapMaxDistance: number): boolean {
+  'worklet'
   return totalDistance <= tapMaxDistance
 }

@@ -15,6 +15,7 @@ export interface AimResult {
 // where you want to shoot). Confirmed empirically (BoxHockey) that these aren't two different input
 // mechanisms, just one drag gesture with a sign flip applied to the finished vector.
 export function computeAimVector(drag: Vec2, maxDragPixels: number, maxSpeed: number, sign: 1 | -1 = 1): AimResult {
+  'worklet'
   const signedDrag = sign === 1 ? drag : { x: -drag.x, y: -drag.y }
   const dist = length(signedDrag)
   if (dist === 0) return { velocity: { x: 0, y: 0 }, power: 0 }
