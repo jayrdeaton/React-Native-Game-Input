@@ -221,3 +221,7 @@ npm install
 
 `react` (>=19.0.0) and `react-native` (>=0.76.0): optional, needed only by `@tastic/input/tilt` (the hook,
 and `Platform.OS` for its web checks). The root entry never loads either.
+
+---
+
+Made by [Infinite Token](https://www.infinitetoken.com), the team behind [Lumber](https://lumber.infinitetoken.com): end-to-end encrypted logging.
